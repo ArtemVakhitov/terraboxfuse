@@ -79,23 +79,23 @@ resource "yandex_compute_instance" "terra-prod" {
     nat = true
   }
 
+  connection {
+    host = self.network_interface.0.nat_ip_address
+    type = "ssh"
+    user = "ubuntu"
+    private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
+  }
+
+
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
   }
 
   provisioner "remote-exec" {
-    
     inline = [
       "sudo apt update",
       "sudo apt install -y tomcat9"
     ]
-
-    connection {
-      host = self.network_interface.0.nat_ip_address
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
-    }
   }
 
   provisioner "local-exec" {
@@ -103,19 +103,10 @@ resource "yandex_compute_instance" "terra-prod" {
   }
 
   provisioner "remote-exec" {
-    
     inline = [
       "sudo cp /tmp/hello-1.0.war /var/lib/tomcat9/webapps/"
     ]
-
-    connection {
-      host = self.network_interface.0.nat_ip_address
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
-    }
   }
-
 
   depends_on = [yandex_compute_instance.terra-build]
 
