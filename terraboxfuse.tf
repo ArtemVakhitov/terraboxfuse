@@ -40,10 +40,11 @@ resource "yandex_compute_instance" "terra" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
   }
 
-  provisioner "remote-exec" {
+    provisioner "remote-exec" {
     inline = (count.index == 0) ? [ "sudo apt-get update && sudo apt-get install -y git maven" ] : [ "sudo apt-get update && sudo apt-get install -y tomcat9" ]
 
     connection {
+      host = yandex_compute_instance.terra[count.index].network_interface.0.nat_ip_address
       type = "ssh"
       user = "ubuntu"
       private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
