@@ -81,7 +81,7 @@ resource "yandex_compute_instance" "terra-prod" {
     ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
   }
 
-    provisioner "remote-exec" {
+  provisioner "remote-exec" {
     
     inline = [
       "sudo apt-get update",
@@ -95,4 +95,7 @@ resource "yandex_compute_instance" "terra-prod" {
       private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
     }
   }
+
+  depends-on = [yandex_compute_instance.terra-build]
+
 }
