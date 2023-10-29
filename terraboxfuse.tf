@@ -41,10 +41,7 @@ resource "yandex_compute_instance" "terra" {
   }
 
   provisioner "remote-exec" {
-    inline = [
-      count.index == 0 ? "sudo apt-get update && sudo apt-get install -y git maven" :
-      count.index == 1 ? "sudo apt-get update && sudo apt-get install -y tomcat9" :
-    ]
+    inline = (count.index == 0) ? [ "sudo apt-get update && sudo apt-get install -y git maven" ] : [ "sudo apt-get update && sudo apt-get install -y tomcat9" ]
 
     connection {
       type = "ssh"
