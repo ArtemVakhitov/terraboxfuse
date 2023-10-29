@@ -84,9 +84,11 @@ resource "yandex_compute_instance" "terra-prod" {
   }
 
   provisioner "local-exec" {
-    command = "scp -3 -P 22 -i ~/.ssh/devops-eng-yandex-kp.pem -o StrictHostKeyChecking=no \
-    ubuntu@${yandex_compute_instance.terra-build.network_interface.0.nat_ip_address}:/tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war \
-    ubuntu@${yandex_compute_instance.terra-prod.network_interface.0.nat_ip_address}:/tmp/"
+    command = <<EOF
+scp -3 -P 22 -i ~/.ssh/devops-eng-yandex-kp.pem -o StrictHostKeyChecking=no
+ubuntu@${yandex_compute_instance.terra-build.network_interface.0.nat_ip_address}:/tmp/boxfuse-sample-java-war-hello/target/hello-1.0.war
+ubuntu@${yandex_compute_instance.terra-prod.network_interface.0.nat_ip_address}:/tmp/
+EOF
   }
 
   provisioner "remote-exec" {
