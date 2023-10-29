@@ -41,8 +41,10 @@ resource "yandex_compute_instance" "terra-build" {
     provisioner "remote-exec" {
     
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y git maven"
+      "sudo apt update",
+      "sudo apt install -y git maven",
+      "cd /tmp && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git",
+      "cd /tmp/boxfuse-sample-java-war-hello && mvn package"
     ]
 
     connection {
@@ -84,8 +86,8 @@ resource "yandex_compute_instance" "terra-prod" {
   provisioner "remote-exec" {
     
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y tomcat9"
+      "sudo apt update",
+      "sudo apt install -y tomcat9"
     ]
 
     connection {
