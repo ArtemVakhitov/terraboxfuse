@@ -13,6 +13,8 @@ provider "yandex" {
 
 resource "yandex_compute_instance" "terra" {
 
+  name = "terra"
+
   zone = "ru-central1-b"
   platform_id = "standard-v1"
 
@@ -29,6 +31,7 @@ resource "yandex_compute_instance" "terra" {
 
   network_interface {
     subnet_id = "e2lgv5mqm56n8fjkt37q"
+    nat = true
   }
 
   metadata = {
