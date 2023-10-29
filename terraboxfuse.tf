@@ -31,7 +31,7 @@ resource "yandex_compute_instance" "terra" {
     subnet_id = "enpsmm7t50q5bg0tsak4"
   }
 
-  metadata {
+  metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
   }
 
