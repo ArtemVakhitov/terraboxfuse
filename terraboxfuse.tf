@@ -96,6 +96,6 @@ resource "yandex_compute_instance" "terra-prod" {
     }
   }
 
-  depends-on = [yandex_compute_instance.terra-build]
+  depends_on = [yandex_compute_instance.terra-build]
 
 }
