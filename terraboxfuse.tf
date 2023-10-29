@@ -13,7 +13,9 @@ provider "yandex" {
 
 resource "yandex_compute_instance" "terra" {
 
-  name = "terra"
+  count = 2
+
+  name = count.index == 0 ? "terra-build" : "terra-prod"
 
   zone = "ru-central1-b"
   platform_id = "standard-v1"
@@ -36,6 +38,34 @@ resource "yandex_compute_instance" "terra" {
 
   metadata = {
     ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
+  }
+
+  provisioner "remote-exec" {
+    when = count.index == 0
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y git maven"
+    ]
+
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
+    }
+  }
+
+  provisioner "remote-exec" {
+    when = count.index == 1
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y tomcat9"
+    ]
+
+    connection {
+      type = "ssh"
+      user = "ubuntu"
+      private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
+    }
   }
 
 }
