@@ -28,7 +28,7 @@ resource "yandex_compute_instance" "terra" {
   }
 
   network_interface {
-    subnet_id = "enpsmm7t50q5bg0tsak4"
+    subnet_id = "e2lgv5mqm56n8fjkt37q"
   }
 
   metadata = {
