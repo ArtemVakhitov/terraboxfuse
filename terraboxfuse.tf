@@ -41,10 +41,9 @@ resource "yandex_compute_instance" "terra" {
   }
 
   provisioner "remote-exec" {
-    when = count.index == 0
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y git maven"
+      count.index == 0 ? "sudo apt-get update && sudo apt-get install -y git maven" :
+      count.index == 1 ? "sudo apt-get update && sudo apt-get install -y tomcat9" :
     ]
 
     connection {
@@ -53,19 +52,4 @@ resource "yandex_compute_instance" "terra" {
       private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
     }
   }
-
-  provisioner "remote-exec" {
-    when = count.index == 1
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y tomcat9"
-    ]
-
-    connection {
-      type = "ssh"
-      user = "ubuntu"
-      private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
-    }
-  }
-
 }
