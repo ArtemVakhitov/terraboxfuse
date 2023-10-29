@@ -91,7 +91,7 @@ resource "yandex_compute_instance" "terra-prod" {
     ]
 
     connection {
-      host = yandex_compute_instance.terra-prod.network_interface.0.nat_ip_address
+      host = self.network_interface.0.nat_ip_address
       type = "ssh"
       user = "ubuntu"
       private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
@@ -109,7 +109,7 @@ resource "yandex_compute_instance" "terra-prod" {
     ]
 
     connection {
-      host = yandex_compute_instance.terra-prod.network_interface.0.nat_ip_address
+      host = self.network_interface.0.nat_ip_address
       type = "ssh"
       user = "ubuntu"
       private_key = file("~/.ssh/devops-eng-yandex-kp.pem")
